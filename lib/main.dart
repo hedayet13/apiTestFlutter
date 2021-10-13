@@ -1,7 +1,15 @@
 import 'package:apitest/firstPage.dart';
+import 'package:apitest/services/noteService.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+void setupLocator() {
+  GetIt.instance.registerLazySingleton(() => NoteService());
+  // GetIt.instance
+}
 
 void main() {
+  setupLocator();
   runApp(MyApp());
 }
 
