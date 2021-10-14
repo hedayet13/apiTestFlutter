@@ -1,4 +1,5 @@
-import 'package:apitest/restApi.dart';
+import 'package:apitest/httpReq/httpPageNotWorking.dart';
+import 'package:apitest/restapiNotWorking/restApi.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatefulWidget {
@@ -29,6 +30,13 @@ class _FirstPageState extends State<FirstPage> {
                       MaterialPageRoute(builder: (context) => RestApi()));
                 },
                 child: Text("RestApi"),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HtttpPage()));
+                },
+                child: Text("HTTP Req Only show json data"),
               )
             ],
           ),
