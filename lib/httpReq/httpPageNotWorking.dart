@@ -15,7 +15,7 @@ class HtttpPage extends StatefulWidget {
 String dataResponse = "";
 
 class _HtttpPageState extends State<HtttpPage> {
-  @override
+  // @override
   void initState() {
     // TODO: implement initState
     getUserData();
@@ -28,12 +28,38 @@ class _HtttpPageState extends State<HtttpPage> {
         appBar: AppBar(
           title: Text("User Data"),
         ),
-        body: Container(child: Card(child: Text(dataResponse.toString()))));
+        body: FutureBuilder(
+          future: getUserData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              // print(users[1].id);
+              return Center(
+                  child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  // print(users.length);
+                  return ListTile(
+                    title: Text("users[index].title"),
+                    subtitle: Text("100"),
+                  );
+                },
+              ));
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ));
   }
 
   Future getUserData() async {
     var response =
-        await http.get(Uri.https("jsonplaceholder.typicode.com", "/users"));
+        await http.get(Uri.https("jsonplaceholder.typicode.com", "/albums"));
     if (response.statusCode == 200) {
       setState(() {
         dataResponse = response.body;
@@ -41,17 +67,30 @@ class _HtttpPageState extends State<HtttpPage> {
       var jsonData = jsonDecode(response.body);
       List<User> users = [];
       for (var u in jsonData) {
-        User user = User(u["name"], u["email"], u["username"]);
+        User user = User(u["userId"], u["id"], u["title"]);
         users.add(user);
       }
+      // for (var i in users) {
+      //   print(i.email);
+      // }
+      // print(users.toString());
+      // print(dataResponse);
       print(users.length);
       return users;
     }
   }
 }
 
-class User {
-  final String name, email, userName;
+// List<User> users = [];
 
-  User(this.name, this.email, this.userName);
+class User {
+  final String title;
+  final int userId;
+  final int id;
+
+  User(
+    this.id,
+    this.userId,
+    this.title,
+  );
 }
